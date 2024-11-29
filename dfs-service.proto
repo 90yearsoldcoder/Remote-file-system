@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+package dfs_service;
+
+service DFSService {
+
+    // Add your service calls here
+
+    // 1. REQUIRED (Parts 1 & 2): A method to store files on the server
+    rpc storeFile(stream FileChunk) returns (ResponseStatus){}
+
+    // 2. REQUIRED (Parts 1 & 2): A method to fetch files from the server
+    rpc fetchFile(FilePath) returns (stream FileChunk){}
+
+    // 3. REQUIRED (Parts 1 & 2): A method to delete files from the server
+    rpc deleteFile(FilePath) returns (ResponseStatus){}
+
+    // 4. REQUIRED (Parts 1 & 2): A method to list all files on the server
+    rpc listFiles(ListFilesRequest) returns (LSResponse){}
+
+    // 5. REQUIRED (Parts 1 & 2): A method to get the status of a file on the server
+    rpc statusFile(FilePath) returns (FileStatus){}
+
+    // 7. Any other methods you deem necessary to complete the tasks of this assignment
+
+
+}
+
+// Add your message types here
+
+message FileChunk{
+    bytes content = 1;
+    // chunk_num is for debug, not necessary in real world
+    int32 chunk_num = 2;
+}
+
+message ResponseStatus{
+    string descStatus = 1;
+}
+
+message FilePath{
+    string path = 1;
+}
+
+message ListFilesRequest{
+    //empty
+}
+
+message FileInfo{
+    string fileName = 1;
+    int64 modified_time = 2;
+}
+
+message LSResponse{
+    repeated FileInfo filesInfoList = 1;
+}
+
+message FileStatus{
+    int64 size = 1;
+    int64 modified_time = 2;
+    int64 creation_time = 3;
+}
